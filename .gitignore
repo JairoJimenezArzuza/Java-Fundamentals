@@ -31,3 +31,9 @@ build/
 # --- OS generated files ---
 .DS_Store
 Thumbs.db
+
+nbproject/
+build/
+dist/
+target/
+.nb-gradle/
