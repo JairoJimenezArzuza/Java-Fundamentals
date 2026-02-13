@@ -3,14 +3,27 @@ package com.jairo.poo.EmployeeManagementSystem;
 import java.math.BigDecimal;
 
 public class EmpleadoPorHora extends Empleado{
+    private int numHoras;
+    private int tarifaHora;
 
-    /**
-     *
-     * @return
-     */
+    public EmpleadoPorHora(int numHoras, int tarifaHora, int id, String nombre, String Departamento) {
+        super(id, nombre, Departamento);
+        this.numHoras = numHoras;
+        this.tarifaHora = tarifaHora;
+    }
+    /*
+        @return
+    */
     @Override
     public BigDecimal calcularSueldo() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return BigDecimal.valueOf(numHoras * tarifaHora);
     }
-    
+
+    public int getNumHoras() {
+        return numHoras;
+    }
+
+    public int getTarifaHora() {
+        return tarifaHora;
+    }   
 }
