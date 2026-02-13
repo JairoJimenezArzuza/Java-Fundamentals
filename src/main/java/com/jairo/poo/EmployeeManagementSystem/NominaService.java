@@ -10,7 +10,12 @@ public class NominaService{
     public NominaService(List<Empleado> listaEmpleados) {
         this.listaEmpleados = listaEmpleados;
     }
-    
+    /**
+     * Esta clase tiene un unico metodo, esta necesita una lista de empleados y con sumetodo
+     * ejecutarPagoEmpleados() genera un eporte de pago recorriendo todos los empleados, con el formato
+     * id empleado : salario y al final la cantidad de dinero que se va en salarios
+     * @return 
+     */
     public String ejecutarPagoEmpleados(){
         StringBuilder mensaje = new StringBuilder("=== REPORTE DE PAGO ===\n");
         BigDecimal sueldoTotalCalculado = BigDecimal.ZERO;

@@ -3,7 +3,7 @@ package com.jairo.poo.EmployeeManagementSystem;
 import java.math.BigDecimal;
 
 public class EmpleadoAsalariado extends Empleado{
-    private BigDecimal sueldo;
+    private final BigDecimal sueldo;
 
     public EmpleadoAsalariado(BigDecimal sueldo, int id, String nombre, String Departamento) {
         super(id, nombre, Departamento);
