@@ -15,9 +15,10 @@ public class PayPalPago implements MetodoPago{
     
     @Override
     public String procesarPago(BigDecimal monto) {
-        if(monto.compareTo(BigDecimal.ZERO) <= 0 || monto.compareTo(new BigDecimal("10000")) > 0){
+        if(monto.compareTo(BigDecimal.ZERO) <= 0 || monto.compareTo(new BigDecimal("10000.00")) > 0){
             throw new IllegalArgumentException("ERROR: Monto insuficiente");
         }
+        
         String tarifaPlana = "0.50"; // Tarifa por transacción,sin importar a cantidad
         BigDecimal total = monto.add(new BigDecimal(tarifaPlana));
         return "Procesando pago ... $ "+total+ "al PayPal con correo "+correoElectronico;

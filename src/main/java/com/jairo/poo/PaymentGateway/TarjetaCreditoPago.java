@@ -26,7 +26,7 @@ public class TarjetaCreditoPago implements MetodoPago{
     public String procesarPago(BigDecimal monto) {
         if (monto.compareTo(BigDecimal.TEN) < 0) {
             throw new IllegalArgumentException("Error: monto invalido");
-        }   
+        }  
         String transferenciaMasComisiones = "1.03"; // Se tiene un 3% de comsiones sobre tansferencia
         BigDecimal total = monto.multiply(new BigDecimal(transferenciaMasComisiones));
         
