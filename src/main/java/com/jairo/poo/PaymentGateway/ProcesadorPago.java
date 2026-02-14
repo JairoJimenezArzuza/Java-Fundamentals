@@ -3,16 +3,18 @@ package com.jairo.poo.PaymentGateway;
 import java.math.BigDecimal;
 
 public class ProcesadorPago {
-    MetodoPago pasarela;
-    BigDecimal montoPago;
-    
-    public ProcesadorPago(MetodoPago pasarela, BigDecimal montoPago) {
+    private final MetodoPago pasarela;
+
+    // El constructor solo configura QUÉ método de pago usaremos
+    public ProcesadorPago(MetodoPago pasarela) {
         this.pasarela = pasarela;
-        this.montoPago = montoPago;
     }
-    
-    public String pagar(){
-        return  pasarela.procesarPago(montoPago);
+
+    // El método recibe el monto, permitiendo usar el mismo procesador para varios pagos
+    public String realizarTransaccion(BigDecimal monto) {
+        if (monto == null || monto.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("El monto a pagar debe ser mayor a cero");
+        }
+        return pasarela.procesarPago(monto);
     }
-        
 }
