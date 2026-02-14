@@ -1,13 +1,18 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.jairo.poo.PaymentGateway;
 
-/**
- *
- * @author jairo
- */
+import java.math.BigDecimal;
+
 public class ProcesadorPago {
+    MetodoPago pasarela;
+    BigDecimal montoPago;
     
+    public ProcesadorPago(MetodoPago pasarela, BigDecimal montoPago) {
+        this.pasarela = pasarela;
+        this.montoPago = montoPago;
+    }
+    
+    public String pagar(){
+        return  pasarela.procesarPago(montoPago);
+    }
+        
 }
