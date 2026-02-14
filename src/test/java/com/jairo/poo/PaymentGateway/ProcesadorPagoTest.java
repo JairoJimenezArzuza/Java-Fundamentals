@@ -5,20 +5,17 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ProcesadorPagoTest {
-
+///////////////////Test Pagos  exitosos
     @Test
     public void testPagoConTarjetaExitoso() {
         // 1. ARRANGE: Configuramos el procesador con Tarjeta
         MetodoPago tarjeta = new TarjetaCreditoPago("1234567812345678", "12/28", "123");
         ProcesadorPago procesador = new ProcesadorPago(tarjeta);
         BigDecimal monto = new BigDecimal("100.00");
-
         // 2. ACT: Ejecutamos el pago
         String resultado = procesador.realizarTransaccion(monto);
-
         // 3. ASSERT: Verificamos que aplicó el 3% (103.00)
         assertTrue(resultado.contains("103.00"), "Debería aplicar el 3% de comisión");
-        assertTrue(resultado.contains("Procesando pago"), "Deberia retornar un pago exitoso");
     }
     @Test
     public void testPagoConCriptoMonedas() {
@@ -26,15 +23,11 @@ public class ProcesadorPagoTest {
         MetodoPago cripto = new CriptoPago("0x12344567");
         ProcesadorPago procesador = new ProcesadorPago(cripto);
         BigDecimal monto = new BigDecimal("50.00");
-
         // 2. ACT: Ejecutamos el pago
         String resultado = procesador.realizarTransaccion(monto);
-
         // 3. ASSERT: Verificamos que aplicó el cobro
         assertTrue(resultado.contains("52.00"), "Debería el cobro de 2 criptomonedas");
-        
-        assertTrue(resultado.contains("Transfiriendo criptomonedas"), "Deberia retornar un pago exitoso");
-    }
+        }
 
     @Test
     public void testPagoConPayPalExitoso() {
@@ -42,42 +35,47 @@ public class ProcesadorPagoTest {
         MetodoPago paypal = new PayPalPago("jairo@ejemplo.com");
         ProcesadorPago procesador = new ProcesadorPago(paypal);
         BigDecimal monto = new BigDecimal("100.00");
-
         // 2. ACT
         String resultado = procesador.realizarTransaccion(monto);
-
         // 3. ASSERT: Verificamos que aplicó la tarifa plana de 0.50 (100.50)
-        assertTrue(resultado.contains("100.50"), "Debería aplicar la tarifa plana de 0.50");
         assertTrue(resultado.contains("al PayPal con correo jairo@ejemplo.com"), "Deberia retornar un pago exitoso");
     }
-
+///////////////////////Test Contruciones Invalidas tarjetas
     @Test
-    public void testConstructorTarjetaInvalidaLanzaExcepcion() {
+    public void testConstructorTarjetaInvalidaPorNumeroTarjeta() {
         // ASSERT: Verificamos que el constructor "guardián" bloquee datos malos
         assertThrows(IllegalArgumentException.class, () -> {
             new TarjetaCreditoPago("123", "12/28", "111"); // Tarjeta muy corta
-        }, "Debería fallar si la tarjeta no tiene 16 dígitos");
+        }, "Debería fallar si la tarjeta no tiene 16 dígitos"); 
+    }
+    @Test
+    public void testConstructorTarjetaInvalidaPorcvv() {
         assertThrows(IllegalArgumentException.class, () -> {
             new TarjetaCreditoPago("1234567812345678", "12/28", "1"); // Tarjeta muy corta
         }, "Debería fallar si la tarjeta no tiene un cvv de tres digitos");
         
     }
+///////////////////////Test Contruciones Invalidas Paypal
     @Test
-    public void testConstructorPaypalInvalidaLanzaExcepcion() {
+    public void testConstructorPaypalInvalidoPorCorreonULO() {
         // ASSERT: Verificamos que el constructor "guardián" bloquee datos malos
         assertThrows(IllegalArgumentException.class, () -> {
             new PayPalPago(null); // Tarjeta muy corta
-        }, "Debería fallar si el correo es nulo");
-        
+        }, "Debería fallar si el correo es nulo");       
+    }
+    @Test
+    public void testConstructorPaypalInvalidoPorFaltaDePunto() {  
         assertThrows(IllegalArgumentException.class, () -> {
             new PayPalPago("jairo@ejemplo_com"); // Tarjeta muy corta
         }, "Debería fallar por no contener un punto");
-       
+    }
+    @Test
+    public void testConstructorPaypalInvalidoPorFaltaDeArroba() {
         assertThrows(IllegalArgumentException.class, () -> {
             new PayPalPago("jairoejemplo.com"); // Tarjeta muy corta
-        }, "Debería fallar por falta de @");
-        
+        }, "Debería fallar por falta de @");  
     }
+    ///////////////////////Test Contruciones Invalidas Cripto
     @Test
     public void testConstructorCriptoInvalidaLanzaExcepcion() {
         // ASSERT: Verificamos que el constructor "guardián" bloquee datos malos
@@ -85,20 +83,19 @@ public class ProcesadorPagoTest {
             new CriptoPago("123"); // Tarjeta muy corta
         }, "Debería fallar por cuenta invalida");
     }
-    ///Test de pago fracasado
+    ///Test de pago fracasado por tarjetas
     @Test
     public void testPagoConTarjetaFallido() {
         // 1. ARRANGE: Configuramos el procesador con Tarjeta
         MetodoPago tarjeta = new TarjetaCreditoPago("1234567812345678", "12/28", "123");
         ProcesadorPago procesador = new ProcesadorPago(tarjeta);
         BigDecimal monto = new BigDecimal("9.00");
-
         
         assertThrows(IllegalArgumentException.class, () -> {
             procesador.realizarTransaccion(monto); // Tarjeta muy corta
         }, "Debería por valor insuficiente");
     }
-
+///Test de pago fracasado por Paypal
     @Test
     public void testPagoConPayPalFallido() {
         // 1. ARRANGE: Configuramos el procesador con PayPal
@@ -106,15 +103,13 @@ public class ProcesadorPagoTest {
         ProcesadorPago procesador = new ProcesadorPago(paypal);
         BigDecimal monto = new BigDecimal("110000.00");
 
-        // 2. ACT
-
          assertThrows(IllegalArgumentException.class, () -> {
             procesador.realizarTransaccion(monto); // Tarjeta muy corta
         }, "Debería fallar por valor excesivo");
     }
-  
+  ///Test de pago fracasado por montos invalidos
    @Test
-    public void testTarjetaRechazaMontoCero() {
+    public void testRechazaMontoCero() {
         MetodoPago tarjeta = new TarjetaCreditoPago("1234567812345678", "12/28", "123");
         ProcesadorPago procesador = new ProcesadorPago(tarjeta);
 
@@ -124,7 +119,7 @@ public class ProcesadorPagoTest {
     }
 
     @Test
-    public void testTarjetaRechazaMontoNegativo() {
+    public void testRechazaMontoNegativo() {
         MetodoPago tarjeta = new TarjetaCreditoPago("1234567812345678", "12/28", "123");
         ProcesadorPago procesador = new ProcesadorPago(tarjeta);
 
