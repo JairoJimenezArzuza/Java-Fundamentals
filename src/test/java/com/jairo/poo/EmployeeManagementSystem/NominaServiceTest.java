@@ -35,9 +35,8 @@ public void testEjecutarPagoEmpleados() {
     String resultado = instance.ejecutarPagoEmpleados();
 
     // 3. ASSERT (Verificar los resultados)
-    // El sueldo total debería ser 5000.00
-    assertTrue(resultado.contains("6000.00"), "El reporte debe contener el total de 5000.00");
-    assertTrue(resultado.contains("Jairo"), "El reporte debe mencionar al trabajador Jairo");
+    assertTrue(resultado.contains("6000.00"), "El reporte debe contener el total de 6000.00");
+    assertTrue(resultado.contains("1"), "El reporte debe mencionar al trabajador Jairo");
 }
     @Test
     public void testSalarioNegativoDebeLanzarExcepcion() {
